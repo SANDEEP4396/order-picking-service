@@ -1,0 +1,53 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: all
+
+# Spring configurations
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/order_picking_service?useSSL=false
+    username: hbstudent
+    password: hbstudent
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  profiles:
+    active: local
+  application:
+    name: order-picking-servic
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      client-id: orderProducer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      buffer-memory: 33554432
+      linger-ms: 1
+      enable-Idempotence: true
+      transactionalId: orderTransaction
+    consumer:
+      bootstrap-servers: localhost:9092
+      client-id: orderConsumer
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      auto-offset-reset: earliest
+      isolationLevel: read_committed
+      max-poll-records: 10
+      heartbeat-interval: 6000
+
+kafka:
+  topic:
+    order:
+      name: order-picking
+      groupId: order-picking-service-group
