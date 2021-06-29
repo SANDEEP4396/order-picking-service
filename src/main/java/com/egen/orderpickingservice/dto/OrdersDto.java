@@ -11,8 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -20,24 +19,13 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrdersDto implements Serializable {
-    Date date = new Date();
-
-    private Long id;
-
-    private Timestamp dateOrdered = new Timestamp(date.getTime());
-
-    private OrderStatus orderStatus = OrderStatus.PLACED;
 
     @JsonProperty(value = "store")
     private Store store;
 
     @JsonProperty(value = "items")
-    private Set<Items> items;
+    private List<ItemDto> items;
 
     @JsonProperty(value = "isSubstituteAllowed")
     private Boolean isSubstituteAllowed;
-
-    @JsonProperty(value = "empId")
-    private Long empId;
-
 }

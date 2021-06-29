@@ -15,8 +15,6 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemDto implements Serializable {
 
-    private Long id;
-
     @JsonProperty(value = "itemName")
     private String itemName;
 

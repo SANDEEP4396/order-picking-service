@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+
 
 @Entity
 @Data
@@ -16,16 +16,11 @@ import java.util.List;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private  Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private  Long empId;
 
-    private Long empId;
+    private String firstName;
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "orderId")
-    private  Orders orderId;
+    private String lastName;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name="empPerformanceId")
-    private List<EmployeePerformance> performanceId;
 }
