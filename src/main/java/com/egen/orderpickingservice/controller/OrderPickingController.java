@@ -7,6 +7,7 @@ import com.egen.orderpickingservice.response.Response;
 import com.egen.orderpickingservice.response.ResponseMetadata;
 import com.egen.orderpickingservice.response.StatusMessage;
 import com.egen.orderpickingservice.service.OrderPickingService;
+import com.egen.orderpickingservice.service.kafka.producer.ProducerServiceImpl;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class OrderPickingController {
 
     @Autowired
     OrderPickingService orderPickingService;
+
+    @Autowired
+    ProducerServiceImpl producerService;
 
     /**
      * Fetches all the orders
@@ -77,7 +81,7 @@ public class OrderPickingController {
             @ApiResponse(code=500,message = "INTERNAL SERVER ERROR"),
             @ApiResponse(code=200,message = "OK")
     })
-    public Response<String> placeOrder(@RequestBody List<OrdersDto> ordersDto) throws ParseException {
+    public Response<String> placeOrder(@RequestBody List<OrdersDto> ordersDto){
         return orderPickingService.createOrders(ordersDto) == Boolean.TRUE ? Response.<String>builder()
                 .meta(ResponseMetadata.builder().statusCode(201)
                         .statusMessage(StatusMessage.CREATED.name())
@@ -91,6 +95,25 @@ public class OrderPickingController {
                                 .build())
                         .data("Failed to place order")
                         .build();
+    }
+
+    /**
+     * Publishes new order details to Kafka consumer
+     * @param ordersDto
+     * @return
+     */
+    @PostMapping(value = "/publish/order")
+    @ApiOperation(value = "Creates a new order and Publishes to kafka consumer",
+            notes = "Refer the Order DTO class to know the Json format")
+    @ApiResponses(value={
+            @ApiResponse(code=201,message = "CREATED"),
+            @ApiResponse(code=500,message = "INTERNAL SERVER ERROR"),
+            @ApiResponse(code=200,message = "OK")
+    })
+    public String publishOrder(@RequestBody List<OrdersDto> ordersDto){
+        log.info("Order Received in Order Controller:{}",ordersDto.toString());
+        producerService.sendOrderData(ordersDto);
+        return "Batch order Received";
     }
 
     /**

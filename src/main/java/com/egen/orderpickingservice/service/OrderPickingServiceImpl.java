@@ -59,8 +59,7 @@ public class OrderPickingServiceImpl implements OrderPickingService {
      * @return
      * @throws ParseException
      */
-    public Boolean createOrders(List<OrdersDto> ordersDto) throws ParseException {
-
+    public Boolean createOrders(List<OrdersDto> ordersDto){
         boolean isBatchOrder = ordersDto.size() == 1 ? false : true;
 
         //Check if it's a batch order or not
@@ -115,7 +114,7 @@ public class OrderPickingServiceImpl implements OrderPickingService {
         AtomicInteger currEmp = new AtomicInteger();
 
         ordersDto.forEach(singleOrder -> {
-            try {
+
                 Orders orders = ordersMapper.convertOrderDtoToEntity(singleOrder);
                 orders.setBatchId(sb.toString());
                 orders.setOrderId(orderNum.get());
@@ -136,9 +135,6 @@ public class OrderPickingServiceImpl implements OrderPickingService {
                 }
                 orders.setOrderedItems(itemsList);
                 totalOrdersList.add(orders);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
         });
         orderPickingRepo.saveAll(totalOrdersList);
         return true;
@@ -193,8 +189,8 @@ public class OrderPickingServiceImpl implements OrderPickingService {
        //Build a string output from the obtained hashmap values
        StringBuilder sb = new StringBuilder();
        sb.append("Average time taken by the employee: " +empId +" to complete"+
-               " single order is: "+averageTimePerOrder.get("Average Time Per order") +
-               " batch orders is: "+averageTimePerOrder.get("Average Time Per batch"));
+               " single order is: "+averageTimePerOrder.get("Single") +
+               " batch orders is: "+averageTimePerOrder.get("Batch"));
 
         return sb.toString();
     }

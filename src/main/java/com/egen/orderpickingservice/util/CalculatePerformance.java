@@ -38,8 +38,8 @@ public class CalculatePerformance {
     averageTimePerOrder = totalTime.get() / totalOrders;
     averageTimePerBatch = totalTime.get()/totalBatchOrders;
 
-    performance.put("Average Time Per order",averageTimePerOrder);
-    performance.put("Average Time Per batch",averageTimePerBatch);
+    performance.put("Single",averageTimePerOrder);
+    performance.put("Batch",averageTimePerBatch);
 
     return performance;
     }

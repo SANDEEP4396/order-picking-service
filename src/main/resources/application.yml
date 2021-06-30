@@ -39,8 +39,8 @@ spring:
     consumer:
       bootstrap-servers: localhost:9092
       client-id: orderConsumer
-      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       auto-offset-reset: earliest
       isolationLevel: read_committed
       max-poll-records: 10
@@ -49,5 +49,5 @@ spring:
 kafka:
   topic:
     order:
-      name: order-picking
-      groupId: order-picking-service-group
+      name: com-egen-bootcamp-order-picking-service
+      groupId: order-picking-service-group2
