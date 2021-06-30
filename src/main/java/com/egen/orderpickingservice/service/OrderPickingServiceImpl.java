@@ -5,13 +5,18 @@ import com.egen.orderpickingservice.dto.OrdersDto;
 import com.egen.orderpickingservice.entity.Employee;
 import com.egen.orderpickingservice.entity.Items;
 import com.egen.orderpickingservice.entity.Orders;
+import com.egen.orderpickingservice.enums.OrderStatus;
 import com.egen.orderpickingservice.exceptions.OrderPickingServiceException;
 import com.egen.orderpickingservice.mapper.OrdersMapper;
 import com.egen.orderpickingservice.repository.EmployeeRepo;
 import com.egen.orderpickingservice.repository.ItemsRepo;
 import com.egen.orderpickingservice.repository.OrderPickingRepo;
+import com.egen.orderpickingservice.util.CalculatePerformance;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,6 +142,61 @@ public class OrderPickingServiceImpl implements OrderPickingService {
         });
         orderPickingRepo.saveAll(totalOrdersList);
         return true;
+    }
+
+    public String getOrderPickStatus(Long id){
+        Optional<Orders> orders = orderPickingRepo.findById(id);
+        if(!orders.isPresent())
+            throw new OrderPickingServiceException("Order status is not available for the given ID:"+id);
+        else
+          return orderPickingRepo.getOrderStatus(id);
+
+    }
+
+    public Boolean cancelPickedOrder(Long id){
+        Optional<Orders> orders = orderPickingRepo.findById(id);
+        if(!orders.isPresent())
+            throw new OrderPickingServiceException("Order status is not available for the given ID:"+id);
+        else {
+            orders.get().setStatus(OrderStatus.CANCELLED);
+            orderPickingRepo.save(orders.get());
+            return true;
+        }
+    }
+
+    public List<Orders> findAllByPageLimit(Integer pageNo, Integer pageSize) {
+
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+
+        return Optional.ofNullable(orderPickingRepo.findAll(paging))
+                .orElseThrow(() ->
+                        new OrderPickingServiceException("No orders were found"))
+                .getContent();
+    }
+    public List<Orders> sortByValues(Integer pageNo, Integer pageSize, String sortBy) {
+
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        return Optional.ofNullable(orderPickingRepo.findAll(paging))
+                .orElseThrow(() ->
+                        new OrderPickingServiceException("No orders were found based on the sort values"))
+                .getContent();
+    }
+
+
+    public String generatePerformanceReportofEmployee(long empId) {
+
+        CalculatePerformance calculatePerformance = new CalculatePerformance();
+
+        List<Orders> ordersList =  orderPickingRepo.findOrdersByEmployee_EmpId(empId);
+       HashMap<String,Double> averageTimePerOrder = calculatePerformance.averageTimePerOrder(ordersList);
+
+       //Build a string output from the obtained hashmap values
+       StringBuilder sb = new StringBuilder();
+       sb.append("Average time taken by the employee: " +empId +" to complete"+
+               " single order is: "+averageTimePerOrder.get("Average Time Per order") +
+               " batch orders is: "+averageTimePerOrder.get("Average Time Per batch"));
+
+        return sb.toString();
     }
 }
 
