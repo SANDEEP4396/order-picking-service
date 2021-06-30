@@ -6,11 +6,12 @@ import com.egen.orderpickingservice.entity.Employee;
 import com.egen.orderpickingservice.entity.Items;
 import com.egen.orderpickingservice.entity.Orders;
 import com.egen.orderpickingservice.enums.OrderStatus;
+import com.egen.orderpickingservice.exceptions.EmployeeNotFoundException;
 import com.egen.orderpickingservice.exceptions.OrderPickingServiceException;
 import com.egen.orderpickingservice.mapper.OrdersMapper;
 import com.egen.orderpickingservice.repository.EmployeeRepo;
-import com.egen.orderpickingservice.repository.ItemsRepo;
 import com.egen.orderpickingservice.repository.OrderPickingRepo;
+import com.egen.orderpickingservice.service.OrderPickingService;
 import com.egen.orderpickingservice.util.CalculatePerformance;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,18 @@ public class OrderPickingServiceImpl implements OrderPickingService {
     @Autowired
     OrderPickingRepo orderPickingRepo;
 
-    @Autowired
-    ItemsRepo itemsRepo;
+//    @Autowired
+//    ItemsRepo itemsRepo;
 
     @Autowired
     EmployeeRepo employeeRepo;
 
     OrdersMapper ordersMapper = new OrdersMapper();
+
+    public OrderPickingServiceImpl(OrderPickingRepo orderPickingRepo,EmployeeRepo employeeRepo) {
+        this.orderPickingRepo=orderPickingRepo;
+        this.employeeRepo = employeeRepo;
+    }
 
     public List<Orders> getAllOrders() {
         return Optional.ofNullable(orderPickingRepo.findAll())
@@ -184,6 +190,9 @@ public class OrderPickingServiceImpl implements OrderPickingService {
         CalculatePerformance calculatePerformance = new CalculatePerformance();
 
         List<Orders> ordersList =  orderPickingRepo.findOrdersByEmployee_EmpId(empId);
+        if(ordersList.isEmpty()){
+            throw new EmployeeNotFoundException("There is no employee with Id: "+empId+" present");
+        }
        HashMap<String,Double> averageTimePerOrder = calculatePerformance.averageTimePerOrder(ordersList);
 
        //Build a string output from the obtained hashmap values

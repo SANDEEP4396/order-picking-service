@@ -1,8 +1,7 @@
 package com.egen.orderpickingservice.service.kafka.consumer;
 
-import com.egen.orderpickingservice.dto.OrdersDto;
 import com.egen.orderpickingservice.service.OrderPickingService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.egen.orderpickingservice.dto.OrdersDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,8 +12,6 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;

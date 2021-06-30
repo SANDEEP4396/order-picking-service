@@ -9,6 +9,7 @@ public interface OrderPickingService {
     List<Orders> getAllOrders();
     Orders findOrderById(Long id);
     Boolean createOrders(List<OrdersDto> ordersDto);
+    Boolean createBatchOrders(List<OrdersDto> ordersDto);
     String getOrderPickStatus(Long id);
     Boolean cancelPickedOrder(Long id);
     List<Orders> findAllByPageLimit(Integer pageNo, Integer pageSize);
