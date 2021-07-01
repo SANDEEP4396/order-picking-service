@@ -15,6 +15,6 @@ node {
      sh 'docker build -t sandeep4396/order-picking-egen .'   
     }
     stage('docker run'){
-        sh 'docker container run --name order-picking-container_api -p 8080:8080 -d sandeep4396/order-picking-egen'
+        sh 'docker container run --name order-picking-container -p 8081:8080 -d sandeep4396/order-picking-egen'
     }
 }
