@@ -96,12 +96,6 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.4.4</version>
 		</dependency>
-        <dependency>
-            <groupId>com.egen</groupId>
-            <artifactId>order-picking-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
     </dependencies>
 
 	<build>
