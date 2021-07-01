@@ -2,9 +2,6 @@ node {
     stage("clean workspace") {
         deleteDir()
     }
-    stage('Maven Build'){
-        sh "mvn install -DskipTests"
-    }
     stage('docker Build Image'){
      sh 'docker build -t sandeep/order-picking .'   
     }
