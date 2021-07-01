@@ -1,6 +1,6 @@
 node {
     stage('Maven Build'){
-        sh "mvn clean package"
+        sh "mvn install -DskipTests"
     }
     stage('docker Build Image'){
      sh 'docker build -t sandeep/order-picking .'   
