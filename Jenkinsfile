@@ -1,7 +1,4 @@
 node {
-    stage('SCM Checkout'){
-        git 'https://github.com/SANDEEP4396/order-picking-service.git'
-    }
     stage('Maven Build'){
         sh "mvn clean package"
     }
