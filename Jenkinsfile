@@ -3,7 +3,7 @@ node {
         deleteDir()
     }
     stage('Maven Build'){
-        sh "mvn install -DskipTests"
+        sh "/usr/bin/mvn clean install"
     }
     stage('docker Build Image'){
      sh 'docker build -t sandeep/order-picking .'   
