@@ -7,7 +7,7 @@ import com.egen.orderpickingservice.response.Response;
 import com.egen.orderpickingservice.response.ResponseMetadata;
 import com.egen.orderpickingservice.response.StatusMessage;
 import com.egen.orderpickingservice.service.OrderPickingService;
-import com.egen.orderpickingservice.service.kafka.producer.ProducerServiceImpl;
+//import com.egen.orderpickingservice.service.kafka.producer.ProducerServiceImpl;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ public class OrderPickingController {
     @Autowired
     OrderPickingService orderPickingService;
 
-    @Autowired
-    ProducerServiceImpl producerService;
+//     @Autowired
+//     ProducerServiceImpl producerService;
 
 
     /**
