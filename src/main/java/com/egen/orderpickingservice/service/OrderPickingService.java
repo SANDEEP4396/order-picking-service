@@ -3,6 +3,7 @@ package com.egen.orderpickingservice.service;
 import com.egen.orderpickingservice.dto.OrdersDto;
 import com.egen.orderpickingservice.entity.Orders;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface OrderPickingService {
@@ -16,4 +17,6 @@ public interface OrderPickingService {
     List<Orders> sortByValues(Integer pageNo, Integer pageSize, String sortBy);
 
     String generatePerformanceReportofEmployee(long empId);
+
+    String getNumberOfPicksEachDay(Long empId, Timestamp startTime);
 }

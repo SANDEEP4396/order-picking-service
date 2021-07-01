@@ -12,13 +12,15 @@ management:
 # Spring configurations
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3307/order_picking_service?useSSL=false
-    username: hbstudent
-    password: hbstudent
+    url: jdbc:mysql://mysqldb/order_picking_service
+    username: root
+    password: root
+    platform: mysql
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     show-sql: true
+    generate-ddl: true
   profiles:
     active: local
   application:

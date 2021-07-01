@@ -27,6 +27,7 @@ public class OrderPickingController {
     @Autowired
     ProducerServiceImpl producerService;
 
+
     /**
      * Fetches all the orders
      * @return list of orders
@@ -111,7 +112,7 @@ public class OrderPickingController {
     })
     public String publishOrder(@RequestBody List<OrdersDto> ordersDto){
         log.info("Order Received in Order Controller:{}",ordersDto.toString());
-        producerService.sendOrderData(ordersDto);
+      //  producerService.sendOrderData(ordersDto);
         return "Batch order Received";
     }
 

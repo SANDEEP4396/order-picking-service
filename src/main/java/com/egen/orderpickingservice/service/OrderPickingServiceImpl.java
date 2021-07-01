@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,9 +34,6 @@ public class OrderPickingServiceImpl implements OrderPickingService {
 
     @Autowired
     OrderPickingRepo orderPickingRepo;
-
-//    @Autowired
-//    ItemsRepo itemsRepo;
 
     @Autowired
     EmployeeRepo employeeRepo;
@@ -201,6 +199,22 @@ public class OrderPickingServiceImpl implements OrderPickingService {
                " single order is: "+averageTimePerOrder.get("Single") +
                " batch orders is: "+averageTimePerOrder.get("Batch"));
 
+        return sb.toString();
+    }
+
+    @Override
+    public String getNumberOfPicksEachDay(Long empId, Timestamp startTime) {
+
+        //Gets current date and adds 1 day to current date and sets it as end date/time
+        Date tomorrow = new Date(startTime.getTime() + (1000 * 60 * 60 * 24));
+        Timestamp ordersUpto = new Timestamp(tomorrow.getTime());
+      List<Orders> totalOrders = Optional.ofNullable(orderPickingRepo
+              .findAllByEmployee_EmpIdAndAndOrderEndTimeBetween(empId,startTime,
+                ordersUpto))
+                .orElseThrow(() ->
+                        new OrderPickingServiceException("Orders between the specific time range not found" ));
+      StringBuilder sb = new StringBuilder();
+      sb.append("Total number of orders picked by the employee in the given time frame is: "+totalOrders.size());
         return sb.toString();
     }
 }
