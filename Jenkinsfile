@@ -12,9 +12,9 @@ node {
         sh "/usr/bin/mvn clean install"
     }
     stage('docker Build Image'){
-     sh 'sudo docker build -t sandeep4396/order-picking-egen .'   
+     sh 'docker build -t sandeep4396/order-picking-egen .'   
     }
     stage('docker run'){
-        sh 'sudo docker container run --network order-picking-service --name order-picking-container$(DOCKER_IMAGE_VERSION) -d -p 8081:8080  sandeep4396/order-picking-egen'
+        sh 'docker container run --network order-picking-service --name order-picking-container$(DOCKER_IMAGE_VERSION) -d -p 8081:8080  sandeep4396/order-picking-egen'
     }
 }
