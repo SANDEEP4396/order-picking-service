@@ -11,6 +11,9 @@ node {
     stage('Maven Build'){
         sh "/usr/bin/mvn clean install"
     }
+     stage("Run tests"){
+        sh 'mvn test -Dtest=OrderPickingServiceImplTest'
+    }
     stage('docker Build Image'){
      sh 'docker build -t sandeep4396/order-picking-egen .'   
     }
